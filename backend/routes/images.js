@@ -31,4 +31,8 @@ router.get('/see/:filename', (req, res) => {
   res.sendFile(filePath);
 });
 
+router.get('moveToAWS/:filename',(req,res)=>{
+
+});
+
 module.exports = router;
