@@ -3,6 +3,8 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const db = require('../models/db');
+const AWS = require('aws-sdk');
+const fs = require('fs');
 
 // Configurazione di Multer per gestire l'upload dei file
 const storage = multer.diskStorage({
@@ -23,5 +25,14 @@ router.get('/', async (req, res) => {
     res.status(500).send('Error querying the database.');
   }
 });
+router.get('/see/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, '../uploads/', filename);
+
+  // Restituisci l'immagine come risposta
+  res.sendFile(filePath);
+});
+
+
 
 module.exports = router;
