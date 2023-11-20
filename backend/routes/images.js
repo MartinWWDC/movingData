@@ -3,6 +3,8 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const db = require('../models/db');
+const AWS = require('aws-sdk');
+const fs = require('fs');
 
 // Configurazione di Multer per gestire l'upload dei file
 const storage = multer.diskStorage({
@@ -31,8 +33,6 @@ router.get('/see/:filename', (req, res) => {
   res.sendFile(filePath);
 });
 
-router.get('moveToAWS/:filename',(req,res)=>{
 
-});
 
 module.exports = router;
