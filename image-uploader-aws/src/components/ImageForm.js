@@ -8,11 +8,10 @@ const ImageForm = () => {
     setSelectedFile(file);
   };
 
-
   const upload = async () => {
     const formData = new FormData();
     formData.append('image', selectedFile);
-  
+
     try {
       await axios.post(process.env.REACT_APP_API_ENDPOINT+'/api/upload', formData, {
         headers: {
@@ -25,14 +24,12 @@ const ImageForm = () => {
     }
   };
 
-  const moveToAWS = (imageId) => {
-    // Implementa la logica per spostare l'immagine da local ad AWS
-  };
-
+  
   return (
     <div>
       <input type="file" onChange={(e) => handleFileChange(e.target.files[0])} />
       <button onClick={upload}>Upload</button>
+
     </div>
   );
 };

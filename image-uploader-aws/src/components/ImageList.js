@@ -1,9 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import moveToAWS from './ImageForm';
 
 const ImageList = () => {
   const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const moveToAWS = async (id) => {
+    console.log(id)
+    try {
+      setIsLoading(true);
+
+      // Esegui una richiesta al tuo backend per ottenere l'indirizzo
+      const response = await axios.get(process.env.REACT_APP_API_ENDPOINT+'/api/moveToAWS/'+id);
+
+      // Puoi fare qualcosa con la risposta se necessario
+      console.log('Risposta dal backend:', response.data);
+
+      // Ricarica la pagina dopo aver ottenuto l'indirizzo
+      window.location.reload();
+    } catch (error) {
+      console.error('Errore durante la richiesta moveToAWS:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   useEffect(() => {
     const fetchImages = async () => {
