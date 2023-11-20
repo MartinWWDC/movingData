@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ImageLoadingTime from './ImageLoadingTime';
 
 const ImageList = () => {
   const [images, setImages] = useState([]);
@@ -39,7 +40,10 @@ const ImageList = () => {
 
     fetchImages();
   }, []);
-
+  const [showImagePage, setShowImagePage] = useState(false);
+  const handleShowImagePage = () => {
+    setShowImagePage(true);
+  };
   return (
     <div>
       <h2>Immagine Locali {process.env.REACT_APP_API_ENDPOINT}</h2>
@@ -58,6 +62,8 @@ const ImageList = () => {
           <div key={image.id}>
             
             <img src={`${process.env.REACT_APP_AWS_URL}/${image.id}`} alt="AWS" />
+            <button onClick={handleShowImagePage}>Carica Pagina Immagini</button>
+            {showImagePage && <ImageLoadingTime imageId={image.id}/>}
           </div>
         ))}
     </div>
