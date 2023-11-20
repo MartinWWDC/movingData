@@ -23,5 +23,12 @@ router.get('/', async (req, res) => {
     res.status(500).send('Error querying the database.');
   }
 });
+router.get('/see/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, '../uploads/', filename);
+
+  // Restituisci l'immagine come risposta
+  res.sendFile(filePath);
+});
 
 module.exports = router;
