@@ -14,26 +14,6 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
-
-// Endpoint per l'upload di un singolo file
-router.post('/upload', upload.single('image'), async (req, res) => {
-  try {
-    const file = req.file;
-    if (!file) {
-      return res.status(400).json({ message: 'Nessun file caricato.' });
-    }
-
-    // Salva i dettagli del file nel database, se necessario
-    const insertQuery = 'INSERT INTO files (filename, path, isLocal) VALUES (?, ?, ?)';
-    const result = await db.query(insertQuery, [file.filename, file.path, true]);
-
-    res.json({ message: 'Upload completato con successo.' });
-  } catch (error) {
-    console.error('Errore durante l\'upload:', error);
-    res.status(500).json({ message: 'Errore durante l\'upload.' });
-  }
-});
 router.get('/', async (req, res) => {
   try {
     const results = await db.query('SELECT * FROM files');
@@ -41,19 +21,6 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Error querying the database:', error);
     res.status(500).send('Error querying the database.');
-  }
-});
-
-router.put('/:id/move-to-aws', async (req, res) => {
-  const { id } = req.params;
-  try {
-    // Implementa la logica per spostare l'immagine da local ad AWS
-    // ...
-
-    res.json({ success: true });
-  } catch (error) {
-    console.error('Error moving image to AWS:', error);
-    res.status(500).send('Error moving image to AWS.');
   }
 });
 

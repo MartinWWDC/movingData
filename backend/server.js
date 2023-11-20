@@ -4,6 +4,8 @@ const imagesRouter = require('./routes/images');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const db = require('./models/db');
+
 
 dotenv.config();
 
@@ -34,6 +36,8 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     }
 
     // Salva i dettagli del file nel database, se necessario
+    const insertQuery = 'INSERT INTO files (id,commento, isLocal) VALUES (?, ?, ?)';
+    const result = db.query(insertQuery, [file.filename, file.path, true]);
 
     res.json({ message: 'Upload completato con successo.' });
   } catch (error) {
