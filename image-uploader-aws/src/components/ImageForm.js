@@ -8,18 +8,20 @@ const ImageForm = () => {
     setSelectedFile(file);
   };
 
+
   const upload = async () => {
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+  
     try {
-      const formData = new FormData();
-      formData.append('image', selectedFile);
-
-      // Aggiungi altre informazioni al formData se necessario
-
-      await axios.post('API_ENDPOINT/upload', formData);
-      alert('Upload completato con successo!');
+      await axios.post(process.env.REACT_APP_API_ENDPOINT+'/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Upload completato con successo.');
     } catch (error) {
       console.error('Errore durante l\'upload:', error);
-      alert('Errore durante l\'upload.');
     }
   };
 
