@@ -93,6 +93,24 @@ app.post('/moveToAWS/:filename', (req, res) => {
   const result = db.query(insertQuery, filename);
 });
 
+app.post('/update-csv', (req, res) => {
+  // Ricevi i nuovi dati CSV dal client e aggiorna il file CSV sul server
+  const newData = req.body.data;
+  csvFilePath=process.env.csvFile
+  // Leggi i dati CSV esistenti
+  const existingData = fs.readFileSync(csvFilePath, 'utf-8');
+  const { imageId, image1LoadTime, image2LoadTime, timestamp } = newData;
+
+  // Unisci i nuovi dati con quelli esistenti
+  const updatedData = existingData + '\n' + image1LoadTime+';'+image2LoadTime;
+
+  // Scrivi i dati aggiornati nel file CSV
+  fs.writeFileSync(csvFilePath, updatedData);
+
+  res.json({ success: true });
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
