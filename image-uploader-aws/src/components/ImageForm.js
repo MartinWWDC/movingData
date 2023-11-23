@@ -13,7 +13,7 @@ const ImageForm = () => {
     formData.append('image', selectedFile);
 
     try {
-      await axios.post(process.env.REACT_APP_API_ENDPOINT+'/api/upload', formData, {
+      await axios.post(process.env.REACT_APP_API_ENDPOINT+'/api/images/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
