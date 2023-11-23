@@ -11,8 +11,8 @@ const ImageList = () => {
       setIsLoading(true);
       console.log(id)
       // Esegui una richiesta al tuo backend per ottenere l'indirizzo
-      console.log(process.env.REACT_APP_API_ENDPOINT+'/moveToAWS/'+id)
-      const response = await axios.post(process.env.REACT_APP_API_ENDPOINT+'/moveToAWS/'+id);
+      console.log(process.env.REACT_APP_API_ENDPOINT+'/api/images/moveToAWS/'+id)
+      const response = await axios.post(process.env.REACT_APP_API_ENDPOINT+'/api/images/moveToAWS/'+id);
 
       // Puoi fare qualcosa con la risposta se necessario
       console.log('Risposta dal backend:', response.data);
