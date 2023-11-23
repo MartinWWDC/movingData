@@ -6,13 +6,12 @@ const db = require('../models/db');
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
-// Configurazione di Multer per gestire l'upload dei file
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Specifica la cartella di destinazione per i file caricati
+    cb(null, 'uploads/'); 
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Genera un nome univoco per il file
+    cb(null, Date.now() + path.extname(file.originalname)); 
   },
 });
 
@@ -29,7 +28,6 @@ router.get('/see/:filename', (req, res) => {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, '../uploads/', filename);
 
-  // Restituisci l'immagine come risposta
   res.sendFile(filePath);
 });
 
