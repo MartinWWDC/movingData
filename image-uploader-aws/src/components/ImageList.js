@@ -4,21 +4,19 @@ import ImageLoadingTime from './ImageLoadingTime';
 
 const ImageList = () => {
   const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   const moveToAWS = async (id) => {
     console.log(id)
     try {
       setIsLoading(true);
       console.log(id)
-      // Esegui una richiesta al tuo backend per ottenere l'indirizzo
-      console.log(process.env.REACT_APP_API_ENDPOINT+'/moveToAWS/'+id)
-      const response = await axios.post(process.env.REACT_APP_API_ENDPOINT+'/moveToAWS/'+id);
+      var route=process.env.REACT_APP_API_ENDPOINT+'/api/images/moveToAWS/'+id
+      console.log(route)
+      const response = await axios.post(route);
 
-      // Puoi fare qualcosa con la risposta se necessario
       console.log('Risposta dal backend:', response.data);
 
-      // Ricarica la pagina dopo aver ottenuto l'indirizzo
       window.location.reload();
     } catch (error) {
       console.error('Errore durante la richiesta moveToAWS:', error);
