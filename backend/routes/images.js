@@ -14,6 +14,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname)); 
   },
 });
+const upload = multer({ storage: storage });
 
 router.get('/', async (req, res) => {
   try {
@@ -31,7 +32,22 @@ router.get('/see/:filename', (req, res) => {
   res.sendFile(filePath);
 });
 
+router.post('/upload', upload.single('image'), (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ message: 'Nessun file caricato.' });
+    }
 
+    const insertQuery = 'INSERT INTO files (id,commento, isLocal) VALUES (?, ?, ?)';
+    const result = db.query(insertQuery, [file.filename, file.path, true]);
+
+    res.json({ message: 'Upload completato con successo.' });
+  } catch (error) {
+    console.error('Errore durante l\'upload:', error);
+    res.status(500).json({ message: 'Errore durante l\'upload.' });
+  }
+});
 
 
 module.exports = router;

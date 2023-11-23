@@ -35,22 +35,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.post('/api/upload', upload.single('image'), (req, res) => {
-  try {
-    const file = req.file;
-    if (!file) {
-      return res.status(400).json({ message: 'Nessun file caricato.' });
-    }
 
-    const insertQuery = 'INSERT INTO files (id,commento, isLocal) VALUES (?, ?, ?)';
-    const result = db.query(insertQuery, [file.filename, file.path, true]);
-
-    res.json({ message: 'Upload completato con successo.' });
-  } catch (error) {
-    console.error('Errore durante l\'upload:', error);
-    res.status(500).json({ message: 'Errore durante l\'upload.' });
-  }
-});
 
 app.use('/api/images', imagesRouter);
 
