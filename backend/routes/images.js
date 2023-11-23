@@ -6,6 +6,15 @@ const db = require('../models/db');
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
+
+AWS.config.update({
+  accessKeyId: process.env.AccessKeyId,
+  secretAccessKey: process.env.secretAccessKey,
+  region: process.env.region
+});
+
+const s3 = new AWS.S3();
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/'); 
@@ -47,6 +56,35 @@ router.post('/upload', upload.single('image'), (req, res) => {
     console.error('Errore durante l\'upload:', error);
     res.status(500).json({ message: 'Errore durante l\'upload.' });
   }
+});
+router.post('/moveToAWS/:filename', (req, res) => {
+  const filename = req.params.filename;
+
+  const filePath = `uploads/${filename}`;
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).send('File non trovato nella cartella "uploads".');
+  }
+
+  const fileBuffer = fs.readFileSync(filePath);
+
+  const params = {
+    Bucket: 'bf-tino-test',
+    Key: filename,
+    Body: fileBuffer
+  };
+
+   s3.upload(params, (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Errore durante il caricamento su S3.');
+    }
+
+    res.send(`File caricato con successo. URL: ${data.Location}`);
+  });
+  
+  const insertQuery = `UPDATE files SET isLocal = '0' WHERE id = ?`;
+  const result = db.query(insertQuery, filename);
 });
 
 
